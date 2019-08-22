@@ -153,8 +153,18 @@
 
   descriptor.value = $getOwnPropertySymbols;
   defineProperty(Object, GOPS, descriptor);
-
+                          
+  var cachedWindowNames = typeof window === 'object' ? Object.getOwnPropertyNames(window) : [];
+  var originalObjectGetOwnPropertyNames = Object.getOwnPropertyNames;
+                          
   descriptor.value = function getOwnPropertyNames(o) {
+    if (toString.call(o) === '[object Window]') {
+      try {
+        return originalObjectGetOwnPropertyNames(o);
+      } catch (e) {
+        return [].concat([], cachedWindowNames);
+      }
+    }
     return gOPN(o).filter(onlyNonSymbols);
   };
   defineProperty(Object, GOPN, descriptor);
