@@ -1,7 +1,7 @@
 (function () {
         'use strict';
 
-        console.log('****custom-event****');
+        console.log('****custom-event-gop****');
 
         if (typeof window.CustomEvent === 'function' && typeof window.Event === 'function') {
             return false;
@@ -26,7 +26,7 @@
         }
         
         if (!Object.assign) {
-                console.log('*****object.assign******');
+                console.log('*****object.assign-gop******');
   Object.defineProperty(Object, 'assign', {
     enumerable: false,
     configurable: true,
@@ -64,7 +64,7 @@
   // (C) Andrea Giammarchi - Mit Style
 
   if (GOPS in Object) return;
-
+  console.log('*****GOP*****');
   var
     setDescriptor,
     G = typeof global === typeof G ? window : global,
