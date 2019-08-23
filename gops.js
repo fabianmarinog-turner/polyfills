@@ -1,3 +1,64 @@
+(function () {
+        'use strict';
+
+        console.log('****custom-event****');
+
+        if (typeof window.CustomEvent === 'function' && typeof window.Event === 'function') {
+            return false;
+        }
+
+        function CustomEvent(event, params) {
+            var evt;
+
+            params = params || { bubbles: false, cancelable: false, detail: undefined };
+            evt = document.createEvent('CustomEvent');
+            evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+            return evt;
+        }
+
+        CustomEvent.prototype = window.Event.prototype;
+
+        if (typeof window.CustomEvent !== 'function') {
+            window.CustomEvent = CustomEvent;
+        }
+        if (typeof window.Event !== 'function') {
+            window.Event = CustomEvent;
+        }
+        
+        if (!Object.assign) {
+                console.log('*****object.assign******');
+  Object.defineProperty(Object, 'assign', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: function(target) {
+      'use strict';
+      if (target === undefined || target === null) {
+        throw new TypeError('Cannot convert first argument to object');
+      }
+
+      var to = Object(target);
+      for (var i = 1; i < arguments.length; i++) {
+        var nextSource = arguments[i];
+        if (nextSource === undefined || nextSource === null) {
+          continue;
+        }
+        nextSource = Object(nextSource);
+
+        var keysArray = Object.keys(Object(nextSource));
+        for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+          var nextKey = keysArray[nextIndex];
+          var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+          if (desc !== undefined && desc.enumerable) {
+            to[nextKey] = nextSource[nextKey];
+          }
+        }
+      }
+      return to;
+    }
+  });
+}
+    })();
 (function (Object, GOPS) {'use strict';
 
   // (C) Andrea Giammarchi - Mit Style
